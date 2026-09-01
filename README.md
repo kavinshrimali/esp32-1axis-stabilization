@@ -162,11 +162,11 @@ To calculate $S_{xx}$, we sum the product of the x-component of all the demeaned
 $$
 \begin{aligned}
 S_{xx} &= \sum_i(x_i^2 - 2x_i\bar{x} + \bar{x})^2 \\
-S_{xx} &= \sum_i(x_i^2) - 2\bar{x}\sum_i(x_i) + sum_i(\bar{x}^2) \\
+S_{xx} &= \sum_i(x_i^2) - 2\bar{x}\sum_i(x_i) + \sum_i(\bar{x}^2) \\
 \end{aligned}
 $$
 
-We can re-write $sum_i(\bar{x})^2)$ as $n\bar{x}^2$. 
+We can re-write $\sum_i(\bar{x})^2)$ as $n\bar{x}^2$. 
 Since $\bar{x} = \frac{\sum_i(x_i)}{n}$, $\sum_i(x_i) = n\bar{x}$.
 
 Hence, we have:
