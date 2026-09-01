@@ -11,7 +11,7 @@ Computer vision relies on a scatter matrix in determining the axis along which a
 Let $v = \begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix}$ be a unit direction vector.
 Let $x_i = \begin{bmatrix} x_i \\ y_i \end{bmatrix}$ be the demeaned coordinate vector of a dark pixel.
 
-To find the projection of $x_i along $v, we compute their dot product:
+To find the projection of $x_i$ along $v$, we compute their dot product:
 $$
 v \cdot x_i
 $$
@@ -39,80 +39,96 @@ M = \begin{bmatrix} \sum_i(x_i^2) & \sum_i(x_iy_i) \\ \sum_i(y_ix_i) & \sum_i(y_
 $$
 
 Let: 
-* Sxx = $\sum_i(x_i^2)$
-* Sxy = Syx = $\sum_i(x_i*y_i)$
-* Syy = $\sum_i(y_i^2)$
+* $S_{xx} = \sum_i(x_i^2)$
+* $S_{xy} = S_{yx} = \sum_i x_i y_i$
+* $S_{yy} = \sum_i(y_i^2)$
 
 We must now find the principal eigenvalue of the matrix M by first forming its characteristic polynomial:
 $$
-tr(M) = Sxx + Syy
-\\
-det(M) = SxxSyy - SxySxy = SxxSyy - (Sxy)^2
+\begin{aligned}
+\text{tr}(M) &= S_{xx} + S_{yy} \\
+\det(M) &= S_{xx}S_{yy} - S_{xy}^2
+\end{aligned}
 $$
-Given that the general form of the characteristic polynomial is $\lambda^2 - tr(M)\lambda + det(M)$ (with $\lambda$ representing the eigenvalues), we have:
+
+Given that the general form of the characteristic polynomial is $\lambda^2 - \text{tr}(M)\lambda + \det(M) = 0$ (with $\lambda$ representing the eigenvalues), we have:
 $$
-\lambda^2 - (Sxx + Syy)\lambda + (SxxSyy - (Sxy)^2)
+\lambda^2 - (S_{xx} + S_{yy})\lambda + (S_{xx}S_{yy} - (S_{xy})^2)
 $$
+
 By the quadratic formula, we have:
 $$
-\frac{(Sxx + Syy) \pm \sqrt{(-(Sxx + Syy))^2 - 4(1)(SxxSyy - (Sxy)^2)}}{2(1)}
+\frac{(S_{xx} + S_{yy}) \pm \sqrt{(-(S_{xx} + S_{yy}))^2 - 4(1)(S_{xx}S_{yy} - (S_{xy})^2)}}{2(1)}
 $$
+
 Simplifying:
 $$
-\frac{(Sxx + Syy) \pm \sqrt{Sxx^2 + 2SxxSyy + Syy^2 - 4SxxSyy + 4(Sxy)^2}}{2} = \frac{(Sxx + Syy) \pm \sqrt{Sxx^2 + Syy^2 - 2SxxSyy + 4(Sxy)^2}}{2}
+\frac{(S_{xx} + S_{yy}) \pm \sqrt{S_{xx}^2 + 2S_{xx}S_{yy} + S_{yy}^2 - 4S_{xx}S_{yy} + 4(S_{xy})^2}}{2} = \frac{(S_{xx} + S_{yy}) \pm \sqrt{S_{xx}^2 + S_{yy}^2 - 2S_{xx}S_{yy} + 4(S_{xy})^2}}{2}
 $$
-Note that Sxx + Syy is positive and the term enclosed in the square root must be positive. So, the largest eigenvalue must be:
+
+Note that $S_{xx} + S_{yy}$ is positive and the term enclosed in the square root must be positive. So, the largest eigenvalue must be:
 $$
-\frac{(Sxx + Syy) + \sqrt{Sxx^2 + Syy^2 - 2SxxSyy + 4(Sxy)^2}}{2}
+\frac{(S_{xx} + S_{yy}) + \sqrt{S_{xx}^2 + S_{yy}^2 - 2S_{xx}S_{yy} + 4(S_{xy})^2}}{2}
 $$
+
 Let $a$ be the principal eigenvector of the general form $\begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix}$.
+
 Given that $Ma$ = Principal Eigenvalue * $a$, we have:
 $$
-Ma = \begin{bmatrix} \sum_i(x_i^2) & \sum_i(x_iy_i) \\ \sum_i(y_ix_i) & \sum_i(y_i^2) \end{bmatrix}\begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix}
-\\
-Ma = \begin{bmatrix} Sxx\cos\theta + Sxy\sin\theta \\ Sxy\cos\theta + Syy\sin\theta \end{bmatrix}
-\\
-\lambda \cdot a = \lambda\begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix} = \frac{(Sxx + Syy) + \sqrt{Sxx^2 + Syy^2 - 2SxxSyy + 4(Sxy)^2}}{2}\begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix} = \begin{bmatrix} \left(\frac{((Sxx + Syy) + \sqrt{Sxx^2 + Syy^2 - 2SxxSyy + 4(Sxy)^2})\cos\theta}{2}\right) \\ \left(\frac{((Sxx + Syy) + \sqrt{Sxx^2 + Syy^2 - 2SxxSyy + 4(Sxy)^2})\sin\theta}{2}\right) \end{bmatrix}
+\begin{aligned}
+Ma &= \begin{bmatrix} \sum_i(x_i^2) & \sum_i(x_iy_i) \\ \sum_i(y_ix_i) & \sum_i(y_i^2) \end{bmatrix}\begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix} \\
+Ma &= \begin{bmatrix} S_{xx}\cos\theta + S_{xy}\sin\theta \\ S_{xy}\cos\theta + S_{yy}\sin\theta \end{bmatrix} \\
+\lambda \cdot a &= \lambda\begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix} &= \frac{(S_{xx} + S_{yy}) + \sqrt{S_{xx}^2 + S_{yy}^2 - 2S_{xx}S_{yy} + 4(S_{xy})^2}}{2}\begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix} &= \begin{bmatrix} \left(\frac{((S_{xx} + S_{yy}) + \sqrt{S_{xx}^2 + S_{yy}^2 - 2S_{xx}S_{yy} + 4(S_{xy})^2})\cos\theta}{2}\right) \\ \left(\frac{((S_{xx} + S_{yy}) + \sqrt{S_{xx}^2 + S_{yy}^2 - 2S_{xx}S_{yy} + 4(S_{xy})^2})\sin\theta}{2}\right) \end{bmatrix}
+\end{aligned}
 $$
-Letting $\lambda\$ = the principal eigenvalue to simplify the derivation, we equate both sides of the equation to arrive at the following equations:
+
+Letting $c$ be the principal eigenvalue to simplify the derivation, we equate both sides of the equation to arrive at the following equations:
 $$
-Sxx\cos\theta + Sxy\sin\theta = c\cos\theta
-\\
-Sxy\cos\theta + Syy\sin\theta = c\sin\theta
+\begin{aligned}
+S_{xx}\cos\theta + S_{xy}\sin\theta &= c\cos\theta \\
+S_{xy}\cos\theta + S_{yy}\sin\theta &= c\sin\theta
+\end{aligned}
 $$
+
 Multiplying the first equation by $\sin\theta$ and the second by $\cos\theta$ we have:
 $$
-Sxx\cos\theta\sin\theta + Sxy(\sin\theta)^2 = c\cos\theta\sin\theta
-\\
-Sxy(\cos\theta)^2 + Syy\sin\theta\cos\theta = c\sin\theta\cos\theta
+\begin{aligned}
+S_{xx}\cos\theta\sin\theta + S_{xy}(\sin\theta)^2 &= c\cos\theta\sin\theta \\
+S_{xy}(\cos\theta)^2 + S_{yy}\sin\theta\cos\theta &= c\sin\theta\cos\theta
+\end{aligned}
 $$
+
 We now equate the left hand-side of both equations:
 $$
-Sxx\cos\theta\sin\theta + Sxy(\sin\theta)^2 = Sxy(\cos\theta)^2 + Syy\sin\theta\cos\theta
+S_{xx}\cos\theta\sin\theta + S_{xy}(\sin\theta)^2 = S_{xy}(\cos\theta)^2 + S_{yy}\sin\theta\cos\theta
 $$
+
 Grouping like terms:
 $$
-(\cos\theta\sin\theta)(Sxx - Syy) = Sxy((\cos\theta)^2 - (\sin\theta)^2)
+(\cos\theta\sin\theta)(S_{xx} - S_{yy}) = S_{xy}((\cos\theta)^2 - (\sin\theta)^2)
 $$
+
 We now apply the following identities to further simplify the equation:
 $$
-\cos\theta\sin\theta = \frac{\sin\left(2\theta\right)}{2}
-\\
-(\cos\theta)^2 - (\sin\theta)^2 = \cos\left(2\theta\right)
+\begin{aligned}
+\cos\theta\sin\theta &= \frac{\sin\left(2\theta\right)}{2} \\
+(\cos\theta)^2 - (\sin\theta)^2 &= \cos\left(2\theta\right)
+\end{aligned}
 $$
+
 Applying these identities, we have:
 $$
-\frac{Sxy}{Sxx - Syy} = \frac{\sin\left(2\theta\right)}{2\cos\left(2\theta\right)}
+\frac{S_{xy}}{S_{xx} - S_{yy}} = \frac{\sin\left(2\theta\right)}{2\cos\left(2\theta\right)}
 $$
-Because $\frac{\sin\left(2\theta\right)}{\cos\left(2\theta\right} = \tan\left(2\theta\right)$:
+
+Because $\frac{\sin(2\theta)}{\cos(2\theta)} = \tan\left(2\theta\right)$:
 $$
-\frac{Sxy}{Sxx - Syy} = \frac{\tan\left(2\theta\right)}{2}
+\frac{S_{xy}}{S_{xx} - S_{yy}} = \frac{\tan\left(2\theta\right)}{2}
 $$
+
 Therefore:
 $$
-/theta = \frac{\arctan(2\frac{Sxy}{Sxx - Syy})}{2}
+\theta = \frac{1}{2}\arctan\left(\frac{2S_{xy}}{S_{xx} - S_{yy}}\right)
 $$
+
 This is our tilt angle.
-
-
-
