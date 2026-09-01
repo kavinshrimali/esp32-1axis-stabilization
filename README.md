@@ -153,4 +153,33 @@ $$
 
 This is our tilt angle.
 
+## Properties Allowing For More Efficient Code
 
+To limit the time complexity of the code by including multiple `for` loops in the code, I used the following properties:
+
+To calculate $S_{xx}$, we sum the product of the x-component of all the demeaned (dark) pixels. In other words, we are taking the following sum: $\sum_i((x_i - \bar{x})^2)$. This sum can be simplified as follows:
+
+$$
+\begin{aligned}
+S_{xx} &= \sum_i(x_i^2 - 2x_i\bar{x} + (\bar{x})^2) \\
+S_{xx} &= \sum_i(x_i^2) - 2\bar{x}\sum_i(x_i) + sum_i((\bar{x})^2) \\
+\end{aligned}
+$$
+
+We can re-write $sum_i((\bar{x})^2)$ as $text{n}(\bar{x}^2)$. 
+Since $\bar{x} = \frac{\sum_i(x_i)}{text{n}}$, $\sum_i(x_i) = text{n}\bar{x}$.
+
+Hence, we have:
+
+$$
+\begin{aligned}
+S_{xx} &= \sum_i(x_i^2) - 2text{n}(\bar{x})^2 + text{n}(\bar{x})^2 = \sum_i(x_i)^2 - text{n}(\bar{x})^2
+\end{aligned}
+$$
+
+I applied the same property in calculating $S_{yy}$. 
+
+To calculate $S_{xy}$, we sum the product of the x and y-components of all the demeaned (dark) pixels. In other words, we are taking the following sum: $\sum_i((x_i - \bar{x})(y_i - \bar{y}))$. This sum can be simplified as follows:
+
+## Key Design Decisions
+* 
