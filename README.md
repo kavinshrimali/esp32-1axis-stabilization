@@ -166,14 +166,14 @@ S_{xx} &= \sum_i(x_i^2) - 2\bar{x}\sum_i(x_i) + sum_i((\bar{x})^2) \\
 \end{aligned}
 $$
 
-We can re-write $sum_i((\bar{x})^2)$ as $text{n}(\bar{x}^2)$. 
-Since $\bar{x} = \frac{\sum_i(x_i)}{text{n}}$, $\sum_i(x_i) = text{n}\bar{x}$.
+We can re-write $sum_i((\bar{x})^2)$ as $n(\bar{x}^2)$. 
+Since $\bar{x} = \frac{\sum_i(x_i)}{n}$, $\sum_i(x_i) = n\bar{x}$.
 
 Hence, we have:
 
 $$
 \begin{aligned}
-S_{xx} &= \sum_i(x_i^2) - 2text{n}(\bar{x})^2 + text{n}(\bar{x})^2 = \sum_i(x_i)^2 - text{n}(\bar{x})^2
+S_{xx} &= \sum_i(x_i^2) - 2n(\bar{x})^2 + n(\bar{x})^2 = \sum_i(x_i)^2 - n(\bar{x})^2
 \end{aligned}
 $$
 
