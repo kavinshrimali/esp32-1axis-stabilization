@@ -36,13 +36,13 @@ Here, M denotes the Scatter Matrix.
 Let us compute the product of $x_i$ and $x_i^T$:
 
 $$
-x_i x_i^T = \begin{bmatrix} x_i \\ y_i \end{bmatrix} \begin{bmatrix} x_i & y_i \end{bmatrix} = \begin{bmatrix} x_i^2 & x_i y_i \\ y_i x_i & y_i^2 \end{bmatrix}
+x_i x_i^T = \begin{bmatrix} x_i \\\\ y_i \end{bmatrix} \begin{bmatrix} x_i & y_i \end{bmatrix} = \begin{bmatrix} x_i^2 & x_i y_i \\\\ y_i x_i & y_i^2 \end{bmatrix}
 $$
 
 Summing over all dark pixels to produce the Scatter Matrix, we have:
 
 $$
-M = \begin{bmatrix} \sum_i(x_i^2) & \sum_i(x_i y_i) \\ \sum_i(y_i x_i) & \sum_i(y_i^2) \end{bmatrix}
+M = \begin{bmatrix} \sum_i(x_i^2) & \sum_i(x_i y_i) \\\\ \sum_i(y_i x_i) & \sum_i(y_i^2) \end{bmatrix}
 $$
 
 Let:
@@ -89,8 +89,8 @@ Given that $Ma = \lambda a$ (where $\lambda$ is the principal eigenvalue), we ha
 
 $$
 \begin{aligned}
-Ma &= \begin{bmatrix} S_{xx} & S_{xy} \\ S_{xy} & S_{yy} \end{bmatrix} \begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix} = \begin{bmatrix} S_{xx}\cos\theta + S_{xy}\sin\theta \\ S_{xy}\cos\theta + S_{yy}\sin\theta \end{bmatrix} \\
-\lambda a &= \begin{bmatrix} \lambda\cos\theta \\ \lambda\sin\theta \end{bmatrix}
+Ma &= \begin{bmatrix} S_{xx} & S_{xy} \\\\ S_{xy} & S_{yy} \end{bmatrix} \begin{bmatrix} \cos\theta \\\\ \sin\theta \end{bmatrix} = \begin{bmatrix} S_{xx}\cos\theta + S_{xy}\sin\theta \\\\ S_{xy}\cos\theta + S_{yy}\sin\theta \end{bmatrix} \\\\
+\lambda a &= \begin{bmatrix} \lambda\cos\theta \\\\ \lambda\sin\theta \end{bmatrix}
 \end{aligned}
 $$
 
