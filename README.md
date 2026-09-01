@@ -8,8 +8,8 @@ I started by building an IMU-based single-axis stabilization platform using an M
 
 ## Tilt Angle Derivation
 Computer vision relies on a scatter matrix in determining the axis along which an image is tilted. The scatter matrix arises from the following steps:
-Let $v = \begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix}$ be a unit direction vector.
-Let $x_i = \begin{bmatrix} x_i \\ y_i \end{bmatrix}$ be the demeaned coordinate vector of a dark pixel.
+Let $v = [\cos\theta, \; \sin\theta]^T$ be a unit direction vector.
+Let $x_i = [x_i, \; y_i]^T$ be the demeaned coordinate vector of a dark pixel.
 
 To find the projection of $x_i$ along $v$, we compute their dot product:
 
@@ -17,7 +17,7 @@ $$
 v \cdot x_i
 $$
 
-Computers determine the shape of objects by calculating their variance, which we compute as follows:
+To determine the principal direction of the dark pixels, we seek the direction $v$ along which their projected coordinates have the greatest variance:
 
 $$
 (v \cdot x_i)^2 = v x_i x_i^T v^T
@@ -45,7 +45,7 @@ $$
 M = \begin{bmatrix} \sum_i(x_i^2) & \sum_i(x_iy_i) \\ \sum_i(y_ix_i) & \sum_i(y_i^2) \end{bmatrix}
 $$
 
-Let: 
+Let:
 * $S_{xx} = \sum_i(x_i^2)$
 * $S_{xy} = S_{yx} = \sum_i x_i y_i$
 * $S_{yy} = \sum_i(y_i^2)$
@@ -83,19 +83,15 @@ $$
 \frac{(S_{xx} + S_{yy}) + \sqrt{S_{xx}^2 + S_{yy}^2 - 2S_{xx}S_{yy} + 4(S_{xy})^2}}{2}
 $$
 
-Let $a$ be the principal eigenvector of the general form $\begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix}$.
+Let $a = [\cos\theta, \; \sin\theta]^T$ be the principal eigenvector.
 
-Given that $Ma$ = Principal Eigenvalue * $a$, we have:
+Given that $Ma = \lambda a$ (where $\lambda$ is the principal eigenvalue), we have:
 
 $$
 \begin{aligned}
-Ma &= \begin{bmatrix} \sum_i(x_i^2) & \sum_i(x_iy_i) \\ \sum_i(y_ix_i) & \sum_i(y_i^2) \end{bmatrix}\begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix} \\
-&= \begin{bmatrix} S_{xx}\cos\theta + S_{xy}\sin\theta \\ S_{xy}\cos\theta + S_{yy}\sin\theta \end{bmatrix}
+Ma &= \begin{bmatrix} S_{xx} & S_{xy} \\ S_{xy} & S_{yy} \end{bmatrix} \begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix} = \begin{bmatrix} S_{xx}\cos\theta + S_{xy}\sin\theta \\ S_{xy}\cos\theta + S_{yy}\sin\theta \end{bmatrix} \\
+\lambda a &= \begin{bmatrix} \lambda\cos\theta \\ \lambda\sin\theta \end{bmatrix}
 \end{aligned}
-$$
-
-$$
-\lambda a = \begin{bmatrix} \lambda\cos\theta \\ \lambda\sin\theta \end{bmatrix}
 $$
 
 Letting $c$ be the principal eigenvalue to simplify the derivation, we equate both sides of the equation to arrive at the following equations:
