@@ -36,7 +36,7 @@ Here, M denotes the Scatter Matrix.
 Let us compute the product of $x_i$ and $x_i^T$:
 
 $$
-x_i x_i^T = \begin{bmatrix} x_i \\ y_i \end{bmatrix} \begin{bmatrix} x_i & y_i \end{bmatrix} = \begin{bmatrix} x_i^2 & x_iy_i \\y_ix_i & y_i^2 \end{bmatrix}
+x_i x_i^T = \begin{bmatrix} x_i \\ y_i \end{bmatrix} \begin{bmatrix} x_i & y_i \end{bmatrix} = \begin{bmatrix} x_i^2 & x_i y_i \\ y_i x_i & y_i^2 \end{bmatrix}
 $$
 
 Summing over all dark pixels to produce the Scatter Matrix, we have:
