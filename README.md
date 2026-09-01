@@ -42,7 +42,7 @@ $$
 Summing over all dark pixels to produce the Scatter Matrix, we have:
 
 $$
-M = \begin{bmatrix} \sum_i(x_i^2) & \sum_i(x_iy_i) \\ \sum_i(y_ix_i) & \sum_i(y_i^2) \end{bmatrix}
+M = \begin{bmatrix} \sum_i(x_i^2) & \sum_i(x_i y_i) \\ \sum_i(y_i x_i) & \sum_i(y_i^2) \end{bmatrix}
 $$
 
 Let:
