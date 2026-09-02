@@ -241,6 +241,10 @@ $$
 
 **Important:** Rail A and Rail B grounds must be bridged with a jumper wire because the two power domains are electrically separate on `+`, but need a shared ground for GPIO14's signal to work correctly.
 
+## Final Build
+![Full build setup](build_photo.jpg)
+(See the Wiring Guide above for exact pin connections.)
+
 ## Build and Flash Configuration
 
 * **Board:** AI Thinker ESP32-CAM
