@@ -194,7 +194,7 @@ Substituting $\sum_i(x_i) = n\bar{x}$ and $\sum_i(y_i) = n\bar{y}$:
 $$
 \begin{aligned}
 S_{xy} &= \sum_i(x_iy_i) - n\bar{y}\bar{x} - n\bar{x}\bar{y} + n\bar{x}\bar{y} \\
-S_{xy} &= \sum_i(x_iy_i) - n\bar{x}\bar{y}
+&= \sum_i(x_iy_i) - n\bar{x}\bar{y}
 \end{aligned}
 $$
 
