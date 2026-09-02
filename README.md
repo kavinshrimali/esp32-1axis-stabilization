@@ -181,5 +181,22 @@ I applied the same property in calculating $S_{yy}$.
 
 To calculate $S_{xy}$, we sum the product of the x and y-components of all the demeaned (dark) pixels. In other words, we are taking the following sum: $\sum_i((x_i - \bar{x})(y_i - \bar{y}))$. This sum can be simplified as follows:
 
+$$
+\begin{aligned}
+S_{xy} &= \sum_i(x_iy_i - x_i\bar{y} - \bar{x}y_i + \bar{x}\bar{y})
+S_{xy} &= \sum_i(x_iy_i) - \bar{y}\sum_i(x_i) - \bar{x}\sum_i(y_i) + \sum_i(\bar{x}\bar{y})
+S_{xy} &= \sum_i(x_iy_i) - \bar{y}\sum_i(x_i) - \bar{x}\sum_i(y_i) + n\bar{x}\bar{y}
+\end{aligned}
+$$
+
+Substituting $\sum_i(x_i) = n\bar{x}$ and $\sum_i(y_i) = n\bar{y}$:
+
+$$
+\begin{aligned}
+S_{xy} &= \sum_i(x_iy_i) - n\bar{y}\bar{x} - n\bar{x}bar{y} + n\bar{x}\bar{y}
+S_{xy} &= \sum_i(x_iy_i) - n\bar{x}\bar{y}
+\end{aligned}
+$$
+
 ## Key Design Decisions
 * 
