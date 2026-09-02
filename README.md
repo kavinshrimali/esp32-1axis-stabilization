@@ -153,27 +153,27 @@ $$
 
 This is our tilt angle.
 
-## Properties Allowing For More Efficient Code
+## Derivation of Algebraic Properties to Limit Per-Frame Processing Time
 
-To limit the time complexity of the code by including multiple `for` loops in the code, I used the following properties:
+To avoid a second pass over the pixel array and reduce per-frame processing time, I used the following algebraic identities to compute $S_{xx}$, $S_{yy}$, and $S_{xy}$ directly from raw sums, without needing the mean calculated in advance:
 
 To calculate $S_{xx}$, we sum the product of the x-component of all the demeaned (dark) pixels. In other words, we are taking the following sum: $\sum_i((x_i - \bar{x})^2)$. This sum can be simplified as follows:
 
 $$
 \begin{aligned}
-S_{xx} &= \sum_i(x_i^2 - 2x_i\bar{x} + \bar{x})^2 \\
+S_{xx} &= \sum_i(x_i^2 - 2x_i\bar{x} + \bar{x}^2) \\
 S_{xx} &= \sum_i(x_i^2) - 2\bar{x}\sum_i(x_i) + \sum_i(\bar{x}^2) \\
 \end{aligned}
 $$
 
-We can re-write $\sum_i(\bar{x})^2)$ as $n\bar{x}^2$. 
+We can re-write $\sum_i(\bar{x}^2)$ as $n\bar{x}^2$. 
 Since $\bar{x} = \frac{\sum_i(x_i)}{n}$, $\sum_i(x_i) = n\bar{x}$.
 
 Hence, we have:
 
 $$
 \begin{aligned}
-S_{xx} &= \sum_i(x_i^2) - 2n\bar{x}^2 + n\bar{x}^2 = \sum_i(x_i)^2 - n\bar{x}^2
+S_{xx} &= \sum_i(x_i^2) - 2n\bar{x}^2 + n\bar{x}^2 = \sum_i(x_i^2) - n\bar{x}^2
 \end{aligned}
 $$
 
@@ -199,4 +199,52 @@ S_{xy} &= \sum_i(x_iy_i) - n\bar{y}\bar{x} - n\bar{x}\bar{y} + n\bar{x}\bar{y} \
 $$
 
 ## Key Design Decisions
-* 
+* **Enabling PSRAM:** Enabling PSRAM allowed for smoother continuous image processing due to the ESP32-CAM's ability to process 2 images at the same time, allowing for smoother stabilization. Using a PSRAM-enabled module also allowed me to use VGA framesize for the images (640 x 480), allowing the camera to process larger images and thus more accurately determine the reference line's tilt. 
+* **Power Supply Buffering (100 µF Capacitor):** I incorporated a 100 µF capacitor to prevent sudden current spikes due to activation of the servo motor from triggering a brownout that would cause the ESP32-CAM to reset.
+* **Independent Servo Power Supply:** Initially, I connected the servo motor to the 5V pin of the ESP32-CAM, but this triggered brownouts due to the current spikes when the servo was stabilizing the tilt. To solve this issue, I powered the servo motor using a power supply made up of 4 AA batteries on a separate breadboard, ensuring the 2 breadboards in use had a common `GND`.
+* **Single-Pass Computation:** Using the algebraic identities proved above, I was able to halve the per-frame processing time, reducing latency in the stabilization.
+* **`LOOP_DELAY` Tuning:** I empirically measured per-cycle processing time via `millis()` logging to reduce latency.
+
+## Bill of Materials 
+* AI-Thinker ESP32-CAM
+* SG90 Servo Motor
+* ESP32-CAM-MB (FTDI Programmer Shield)
+* 100 μF Electrolytic Capacitor
+* 4* AA Batteries
+* Battery Holder
+* Breadboard and Jumper Cables
+
+## Wiring Guide
+
+### ESP32-CAM ↔ FTDI Programmer
+| ESP32-CAM Pin | FTDI Pin | Notes |
+|---|---|---|
+| 5V | 5V | |
+| GND | GND | |
+| U0R | TX | |
+| U0T | RX | |
+| GPIO0 | GND | Only during flashing - disconnect before running |
+
+### Servo Motor
+| Servo Wire | Connects To | Notes |
+|---|---|---|
+| Signal (orange/yellow) | GPIO14 | |
+| Power (red) | Battery pack `+` rail | Separate rail from ESP32-CAM's 5V |
+| Ground (brown) | Battery pack `-` rail | Bridged to ESP32-CAM's GND — see below |
+
+### Power Domains
+| Component | Power Source | Ground |
+|---|---|---|
+| ESP32-CAM | FTDI 5V (via laptop USB) | Breadboard A `-` rail |
+| Servo Motor | 4×AA battery pack (6V) | Breadboard B `-` rail |
+
+**Important:** Rail A and Rail B grounds must be bridged with a jumper wire because the two power domains are electrically separate on `+`, but need a shared ground for GPIO14's signal to work correctly.
+
+## Build and Flash Configuration
+
+* **Board:** AI Thinker ESP32-CAM
+* **Flash Frequency:** 80 MHz
+* **Flash Mode:** QIO
+* **Partition Scheme:** HUGE APP (3MB No OTA/1MB SPIFFS)
+* **PSRAM:** Enabled
+* **Baud Rate:** 115200
