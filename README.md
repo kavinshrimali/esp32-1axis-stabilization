@@ -204,13 +204,14 @@ $$
 * **Independent Servo Power Supply:** Initially, I connected the servo motor to the 5V pin of the ESP32-CAM, but this triggered brownouts due to the current spikes when the servo was stabilizing the tilt. To solve this issue, I powered the servo motor using a power supply made up of 4 AA batteries on a separate breadboard, ensuring the 2 breadboards in use had a common `GND`.
 * **Single-Pass Computation:** Using the algebraic identities proved above, I was able to halve the per-frame processing time, reducing latency in the stabilization.
 * **`LOOP_DELAY` Tuning:** I empirically measured per-cycle processing time via `millis()` logging to reduce latency.
+* The implementation uses the `atan2()` function rather than `arctan()` to preserve quadrant information across all tilt angles.
 
 ## Bill of Materials 
 * AI-Thinker ESP32-CAM
 * SG90 Servo Motor
 * ESP32-CAM-MB (FTDI Programmer Shield)
 * 100 μF Electrolytic Capacitor
-* 4* AA Batteries
+* 4x AA Batteries
 * Battery Holder
 * Breadboard and Jumper Cables
 
@@ -219,16 +220,16 @@ $$
 ### ESP32-CAM ↔ FTDI Programmer
 | ESP32-CAM Pin | FTDI Pin | Notes |
 |---|---|---|
-| 5V | 5V | |
-| GND | GND | |
-| U0R | TX | |
-| U0T | RX | |
+| 5V | 5V | N/A |
+| GND | GND | N/A |
+| U0R | TX | N/A |
+| U0T | RX | N/A |
 | GPIO0 | GND | Only during flashing - disconnect before running |
 
 ### Servo Motor
 | Servo Wire | Connects To | Notes |
 |---|---|---|
-| Signal (orange/yellow) | GPIO14 | |
+| Signal (orange/yellow) | GPIO14 | N/A |
 | Power (red) | Battery pack `+` rail | Separate rail from ESP32-CAM's 5V |
 | Ground (brown) | Battery pack `-` rail | Bridged to ESP32-CAM's GND — see below |
 
